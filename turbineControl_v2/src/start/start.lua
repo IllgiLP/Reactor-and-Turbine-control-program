@@ -5,29 +5,29 @@
 --========== Global variables for all program parts ==========
 
 --All options
-optionList = {}
-version = 0
-rodLevel = 0
-backgroundColor = 0
-textColor = 0
-reactorOffAt = 0
-reactorOnAt = 0
-mainMenu = ""
-lang = ""
-overallMode = ""
-program = ""
-turbineTargetSpeed = 0
-targetSteam = 0
-turbineOnOff = ""
+_G.optionList = {}
+_G.version = 0
+_G.rodLevel = 0
+_G.backgroundColor = 0
+_G.textColor = 0
+_G.reactorOffAt = 0
+_G.reactorOnAt = 0
+_G.mainMenu = ""
+_G.lang = ""
+_G.overallMode = ""
+_G.program = ""
+_G.turbineTargetSpeed = 0
+_G.targetSteam = 0
+_G.turbineOnOff = ""
 --Peripherals
-mon = "" --Monitor
-r = "" --Reactor
-v = "" --Energy Storage
-t = {} --Turbines
+_G.mon = "" --Monitor
+_G.r = "" --Reactor
+_G.v = "" --Energy Storage
+_G.t = {} --Turbines
 --Total count of all turbines
-amountTurbines = 0
+_G.amountTurbines = 0
 --TouchpointLocation (same as the monitor)
-touchpointLocation = {}
+_G.touchpointLocation = {}
 
 
 --========== Global functions for all program parts ==========
@@ -36,7 +36,7 @@ touchpointLocation = {}
 --===== Functions for loading and saving the options =====
 
 --Loads the options.txt file and adds values to the global variables
-function loadOptionFile()
+function _G.loadOptionFile()
 	--Loads the file
 	local file = fs.open("/reactor-turbine-program/config/options.txt","r")
 	local list = file.readAll()
@@ -46,24 +46,24 @@ function loadOptionFile()
     optionList = textutils.unserialise(list)
 
 	--Assign values to variables
-	version = optionList["version"]
-	rodLevel = optionList["rodLevel"]
-	backgroundColor = tonumber(optionList["backgroundColor"])
-	textColor = tonumber(optionList["textColor"])
-	reactorOffAt = optionList["reactorOffAt"]
-	reactorOnAt = optionList["reactorOnAt"]
-	mainMenu = optionList["mainMenu"]
-	lang = optionList["lang"]
-	overallMode = optionList["overallMode"]
-	program = optionList["program"]
-	turbineTargetSpeed = optionList["turbineTargetSpeed"]
-	targetSteam  = optionList["targetSteam"]
-	turbineOnOff = optionList["turbineOnOff"]
+	_G.version = optionList["version"]
+	_G.rodLevel = optionList["rodLevel"]
+	_G.backgroundColor = tonumber(optionList["backgroundColor"])
+	_G.textColor = tonumber(optionList["textColor"])
+	_G.reactorOffAt = optionList["reactorOffAt"]
+	_G.reactorOnAt = optionList["reactorOnAt"]
+	_G.mainMenu = optionList["mainMenu"]
+	_G.lang = optionList["lang"]
+	_G.overallMode = optionList["overallMode"]
+	_G.program = optionList["program"]
+	_G.turbineTargetSpeed = optionList["turbineTargetSpeed"]
+	_G.targetSteam  = optionList["targetSteam"]
+	_G.turbineOnOff = optionList["turbineOnOff"]
 
 end
 
 --Refreshes the options list
-function refreshOptionList()
+function _G.refreshOptionList()
 	optionList["version"] = version
 	optionList["rodLevel"] = rodLevel
 	optionList["backgroundColor"] = backgroundColor
@@ -80,7 +80,7 @@ function refreshOptionList()
 end
 
 --Saves all data basck to the options.txt file
-function saveOptionFile()
+function _G.saveOptionFile()
 	--Refresh option list
 	refreshOptionList()
     --Serialise the table
@@ -96,7 +96,7 @@ end
 --===== Automatic update detection =====
 
 --Check for updates
-function checkUpdates()
+function _G.checkUpdates()
 
 	--Check current branch (release or beta)
 	local currBranch = ""
@@ -108,7 +108,7 @@ function checkUpdates()
 	end
 
 	--Get Remote version file
-	downloadFile("https://raw.githubusercontent.com/ThorsCrafter/Reactor-and-Turbine-control-program/"..currBranch.."/turbineControl_v2/src/",currBranch..".ver")
+	downloadFile("https://raw.githubusercontent.com/IllgiLP/Reactor-and-Turbine-control-program/"..currBranch.."/turbineControl_v2/src/",currBranch..".ver")
 
 	--Compare local and remote version
 	local file = fs.open(currBranch..".ver","r")
@@ -131,7 +131,7 @@ function checkUpdates()
 end
 
 
-function doUpdate(toVer,branch)
+function _G.doUpdate(toVer,branch)
 
 	--Set the monitor up
 	local x,y = mon.getSize()
@@ -240,13 +240,13 @@ function doUpdate(toVer,branch)
 end
 
 --Download Files (For Remote version file)
-function downloadFile(relUrl,path)
+function _G.downloadFile(relUrl,path)
 	local gotUrl = http.get(relUrl..path)
 	if gotUrl == nil then
 		term.clear()
 		error("File not found! Please check!\nFailed at "..relUrl..path)
 	else
-		url = gotUrl.readAll()
+		_G.url = gotUrl.readAll()
 	end
 
 	local file = fs.open(path,"w")
@@ -257,27 +257,27 @@ end
 
 --===== Initialization of all peripherals =====
 
-function initPeripherals()
+function _G.initPeripherals()
 	--Get all peripherals
 	local peripheralList = peripheral.getNames()
 	for i = 1, #peripheralList do
 		--Turbines
 		if peripheral.getType(peripheralList[i]) == "BigReactors-Turbine" then
 			t[amountTurbines] = peripheral.wrap(peripheralList[i])
-			amountTurbines = amountTurbines + 1
+			_G.amountTurbines = amountTurbines + 1
 			--Reactor
 		elseif peripheral.getType(peripheralList[i]) == "BigReactors-Reactor" then
-			r = peripheral.wrap(peripheralList[i])
+			_G.r = peripheral.wrap(peripheralList[i])
 			--Monitor & Touchpoint
 		elseif peripheral.getType(peripheralList[i]) == "monitor" then
-			mon = peripheral.wrap(peripheralList[i])
-			touchpointLocation = peripheralList[i]
+			_G.mon = peripheral.wrap(peripheralList[i])
+			_G.touchpointLocation = peripheralList[i]
 			--Capacitorbank / Energycell / Energy Core
 		else
 			local tmp = peripheral.wrap(peripheralList[i])
 			local stat,err = pcall(function() tmp.getEnergyStored() end)
 			if stat then
-				v = tmp
+				_G.v = tmp
 			end
 		end
 	end
@@ -310,13 +310,13 @@ function initPeripherals()
 		end
 	end
 
-	amountTurbines = amountTurbines - 1
+	_G.amountTurbines = amountTurbines - 1
 end
 
 
 --===== Shutdown and restart the computer =====
 
-function restart()
+function _G.restart()
 	saveOptionFile()
 	mon.clear()
 	mon.setCursorPos(38,8)

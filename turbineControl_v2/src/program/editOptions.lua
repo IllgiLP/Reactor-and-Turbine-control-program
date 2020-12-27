@@ -245,7 +245,7 @@ function backToMainMenu()
       mon.write("Reactor on below "..math.floor(reactorOnAt).."%   ")
     end
   end
-  
+
   mon.setCursorPos(24,12)
   if tonumber(optionList["turbineTargetSpeed"]) ~= turbineTargetSpeed then
     if lang == "de" then

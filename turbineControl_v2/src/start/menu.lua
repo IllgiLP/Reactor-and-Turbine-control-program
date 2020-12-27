@@ -15,7 +15,7 @@ local startOn = {}
 local startOff = {}
 
 --Erstellt die Buttons im Hauptmenu
-function createButtons()
+function _G.createButtons()
   page:add("Deutsch",nil,39,11,49,11)
   page:add("English",nil,39,13,49,13)
 
@@ -84,7 +84,7 @@ function createButtons()
 end
 
 --Beendet das Programm
-function exit()
+function _G.exit()
   mon.clear()
   mon.setCursorPos(27,8)
   if lang == "de" then
@@ -97,7 +97,7 @@ function exit()
   shell.completeProgram("/reactor-turbine-program/start/menu.lua")
 end
 
-function switchProgram(currBut)
+function _G.switchProgram(currBut)
   if program == "turbine" and currBut == "Reactor" then
     program = "reactor"
     if lang == "de" then
@@ -138,7 +138,7 @@ function switchProgram(currBut)
   displayMenu()
 end
 
-function startTC()
+function _G.startTC()
   if program == "turbine" then
     shell.run("/reactor-turbine-program/program/turbineControl.lua")
   elseif program == "reactor" then
@@ -245,7 +245,7 @@ local function getClick(funct)
 end
 
 --Zeigt das Menü an
-function displayMenu()
+function _G.displayMenu()
   mon.clear()
   page:draw()
   mon.setBackgroundColor(backgroundColor)

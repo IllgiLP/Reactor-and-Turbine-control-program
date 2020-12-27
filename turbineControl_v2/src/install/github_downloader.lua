@@ -47,15 +47,15 @@ function selectBranch()
 		print("1) master (Realeases)")
 		print("2) beta (Betaversions)")
 		term.write("Input (1-2): ")
-	end	
+	end
 	local input = read()
 	if input == "1" then
 		branch = "master"
-		relUrl = "https://raw.githubusercontent.com/ThorsCrafter/Reactor-and-Turbine-control-program/"..branch.."/turbineControl_v2/src/"
+		relUrl = "https://raw.githubusercontent.com/IllgiLP/Reactor-and-Turbine-control-program/"..branch.."/turbineControl_v2/src/"
 		releaseVersion()
 	elseif input == "2" then
 		branch = "beta"
-		relUrl = "https://raw.githubusercontent.com/ThorsCrafter/Reactor-and-Turbine-control-program/"..branch.."/turbineControl_v2/src/"
+		relUrl = "https://raw.githubusercontent.com/IllgiLP/Reactor-and-Turbine-control-program/"..branch.."/turbineControl_v2/src/"
 		betaVersion()
 	else
 		if installLang == "de" then print("Ungueltige Eingabe!")
